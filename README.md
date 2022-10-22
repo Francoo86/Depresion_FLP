@@ -1,3 +1,3 @@
-# Titulo.
+# Trabajo 1.
 
-Info del trabajo (BETA).
+Lua + (MySQL u OracleDB) es lo que se utilizará para el desarrollo del sistema.
