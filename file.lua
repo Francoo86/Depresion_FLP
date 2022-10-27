@@ -1,3 +1,7 @@
+
+-- Palabra clave nil: Es el equivalente a un valor vacío o nulo.
+
+-- Leer archivos.
 local function ReadFile(Filename)
     local File = io.open(Filename, "rb")
     if not File then return nil end
@@ -5,6 +9,10 @@ local function ReadFile(Filename)
 
     return File
 end
+
+-- Leer líneas de cada archivo, si el archivo se encuentra crea
+-- una tabla donde cada linea va a ser almacenada en ella con un índice.
+-- Por ejemplo: Linea[1] = hola
 
 local function ReadLines(Filename)
     if not ReadFile(Filename) then return {} end
@@ -17,6 +25,7 @@ local function ReadLines(Filename)
     return Lines
 end
 
+--- Imprimir lineas basandose en la tabla.
 local function PrintLines(FileLines)
     if not FileLines then return end
 
