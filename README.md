@@ -1,22 +1,66 @@
-# Cátedra 1.
+# Taller-1-FLP
 
-Lua + MySQL es lo que se utilizará para el desarrollo del sistema.
+# Catedra-1
 
-## Instalación del proyecto.  
+El sistema a desarrollar se hará mediante uso del lenguaje [LUA](https://www.lua.org/) y el gestor de base de datos [MySQL](https://www.mysql.com/).
 
-1. Se requiere el intérprete de Lua, el cuál puede ser obtenido en el siguiente [enlace](https://luabinaries.sourceforge.net/).
-2. Seleccionar una de las versiones mostradas en la página web.
-3. Presionar el botón verde que dice "Download Lastest version": ![image](https://user-images.githubusercontent.com/115720207/199761497-28796bb7-d860-4219-a665-6317d12d361c.png)
-4. Esperar y presionar "Download".
-5. Terminado dicho proceso de descargar, colocamos los archivos descargados en la raíz del disco principal para después añadir Lua a ```PATH```.
-6. Por consiguiente nos debería quedar así: ![image](https://user-images.githubusercontent.com/115720207/199772647-c6a279b5-eeeb-430a-a60e-df9f1277fcaa.png)
-8. En la barra de búsqueda de Windows colocamos "Panel de control".
-9. Luego de ello nos mostrará un menu como este, las flechas indican donde hay que acceder por orden.
-![1d164ac6-20f2-4987-8a9a-e6d679fd629b](https://user-images.githubusercontent.com/115720207/199770327-8bdade81-f730-4cad-9158-3026d20b4683.png)
-8. Entramos en configuración avanzada del sistema.
-![a08e6177-f65d-4329-a12d-15106085119e](https://user-images.githubusercontent.com/115720207/199770736-cf565be2-cbcb-4203-b1ef-d98046bbdd07.png)
-9. Una vez clickeado el botón de "Variables de entorno", se nos mostrará este menú. 
-![289adc92-a95e-4309-8b2f-c73ae598839e](https://user-images.githubusercontent.com/115720207/199771538-fabcc01a-170d-42f7-9df3-97343a2f95e8.png)
-11. En el apartado de variables del sistema, buscamos el que dice Path, pinchamos en editar y colocamos en nuevo.
-12. Colocamos lo siguiente ```C:\lua```.
-13. Finalmente aceptamos y aplicamos.
+## Tabla de Contenidos
+* [Catedra 1](#catedra-1)
+* [Instalacion](#instalacion)
+* [Estado del proyecto](#estado-del-proyecto)
+* [Tecnologias usadas](#tecnologias-usadas)
+
+## Instalacion
+
+Por favor siga la guía de instrucciones para su correcta instalación.
+
+- Primeramente, instalar el intérprete de LUA mediante el siguiente [enlace](https://luabinaries.sourceforge.net/).
+- Instalar una de las versiones presentadas en el enlace `Recomendable instalar la última versión.`
+- Seleccionar el botón "Download Latest Version" 
+
+![image](https://user-images.githubusercontent.com/116284986/201179582-bad84422-6692-48e1-b76d-b5affabee62c.png)
+
+- Esperar que cargue el proceso y seleccionar "Download".
+
+![image](https://user-images.githubusercontent.com/116284986/201179878-c512f021-c252-4802-8d32-dc064d6c5387.png)
+
+- Procedemos a colocar los archivos en el disco principal.
+- Nos debería quedar una carpeta llamada `LUA` en el disco seleccionado.
+
+![image](https://user-images.githubusercontent.com/116284986/201181231-edca9f1f-36d2-4253-89a9-c17c727af250.png)
+
+- Luego vamos a la barra de búsqueda de Windows.
+- Ingresamos al `Panel de control.`
+- - Nos dirigimos a Sistema y Seguridad.
+  - Entramos al apartado Sistema.
+  - Dentro de este apartado seleccionamos `Configuración avanzada del sistema.`
+  
+  ![image](https://user-images.githubusercontent.com/116284986/201183966-bb169d78-ad9d-4941-afef-9809012b1ec9.png)
+  
+  - Ya dentro de la Propiedades del sistema, nos dirigimos a `Opciones avanzadas`.
+  - Seleccionamos `Variables de entorno`.
+  
+  ![image](https://user-images.githubusercontent.com/116284986/201191632-75bdc06c-ed4f-43f7-91d9-edc090a5a35c.png)
+  
+  - Una vez dentro, nos dirigimos a Variables del sistema.
+  - Seleccionamos la variable `Path`.
+  - Elegimos Editar.
+  
+  ![image](https://user-images.githubusercontent.com/116284986/201192138-ca7468f8-3bbc-458f-875e-c83c861f3447.png)
+
+  - Dentro del apartado de edición, elegimos la opción `Nuevo.`
+  
+  ![image](https://user-images.githubusercontent.com/116284986/201192410-c57243da-c48a-4328-bc4d-3b3744451f34.png)
+  
+  - Agregamos lo siguiente `C:\lua`.
+  - Y finalizamos seleccionando Aceptar y Aplicar.
+  
+## Estado del proyecto
+
+El proyecto está: _en progreso_
+
+## Tecnologias usadas
+
+ - LUA - 5.4.2
+ - Visual Studio Code
+ - MySQL
