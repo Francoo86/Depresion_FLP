@@ -2,7 +2,7 @@
 
 # Catedra-1
 
-El sistema a desarrollar se hará mediante uso del lenguaje [LUA](https://www.lua.org/) y el gestor de base de datos [PostgreSQL](https://www.postgresql.org/).
+El sistema a desarrollar se hará mediante uso del lenguaje [LUA](https://www.lua.org/) y el gestor de base de datos [MySQL](https://www.mysql.com/).
 
 ## Tabla de Contenidos
 * [Catedra 1](#catedra-1)
