@@ -22,19 +22,24 @@ Por favor siga la guía de instrucciones para su correcta instalación.
 
 [![cmd.png](https://i.postimg.cc/Hn4Yw3RG/cmd.png)](https://postimg.cc/rRs2cGqg)
 
-- Una vez en la consola, debemos introducir el siguiente comando: "Ubuntu". Si es que se tiene otra versión de Ubuntu (Ej: "Ubuntu 18.04.5 LTS") el comando cambiará
+- Luego en la consola, debemos introducir el siguiente comando: "Ubuntu". Si es que se tiene otra versión de Ubuntu (Ej: "Ubuntu 18.04.5 LTS") el comando cambiará
 - a "Ubuntu1804".
-- Nos debería quedar una carpeta llamada `LUA` en el disco seleccionado.
+- Luego de instalarse nos pedirá crearnos un usuario y una contraseña que deberemos de confirmar.
 
-![image](https://user-images.githubusercontent.com/116284986/201181231-edca9f1f-36d2-4253-89a9-c17c727af250.png)
+[![imagen-2022-11-12-215404985.png](https://i.postimg.cc/KvqZb9Xz/imagen-2022-11-12-215404985.png)](https://postimg.cc/svWF94gd)
 
-- Luego vamos a la barra de búsqueda de Windows.
-- Ingresamos al `Panel de control.`
-- - Nos dirigimos a Sistema y Seguridad.
-  - Entramos al apartado Sistema.
-  - Dentro de este apartado seleccionamos `Configuración avanzada del sistema.`
-  
-  ![image](https://user-images.githubusercontent.com/116284986/201183966-bb169d78-ad9d-4941-afef-9809012b1ec9.png)
+- Con esto ya podremos utilizar ubuntu.
+
+
+- A continuación, procederemos a introducir los siguientes comandos en orden para la instalación del lenguaje `Lua`:
+- `apt-get update` Para la descarga y actualización de paquetes.
+- `apt-get upgrade` Para descargar la ultima versión de `Linux`.
+- `apt-cache search lua5` Al introducir este comando se desplegará una lista con todas las versiones de `Lua` disponibles para descargar.
+
+- Nos interesa la versión de `Lua` 5.1 ya que esta es compatible con las librerias MySql, por lo que introduciremos el comando `sudo apt install lua5.1`.
+
+ [![imagen-2022-11-12-222716156.png](https://i.postimg.cc/5tF7yt6G/imagen-2022-11-12-222716156.png)](https://postimg.cc/3yYCbYjC)
+ 
   
   - Ya dentro de la Propiedades del sistema, nos dirigimos a `Opciones avanzadas`.
   - Seleccionamos `Variables de entorno`.
