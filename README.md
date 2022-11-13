@@ -14,17 +14,16 @@ El sistema a desarrollar se hará mediante uso del lenguaje [LUA](https://www.lu
 
 Por favor siga la guía de instrucciones para su correcta instalación.
 
-- Primeramente, instalar el intérprete de LUA mediante el siguiente [enlace](https://luabinaries.sourceforge.net/).
-- Instalar una de las versiones presentadas en el enlace `Recomendable instalar la última versión.`
-- Seleccionar el botón "Download Latest Version" 
+- Primero, instalar la terminal de entorno Ubuntu con el subsistema de Windows para Linux por medio de la tienda Microsoft.
+[![imagen-2022-11-12-210119990.png](https://i.postimg.cc/bJx3p24Y/imagen-2022-11-12-210119990.png)](https://postimg.cc/r0pS9z87).
+- Para el caso, instalaremos la que dice solo "Ubuntu".
 
-![image](https://user-images.githubusercontent.com/116284986/201179582-bad84422-6692-48e1-b76d-b5affabee62c.png)
+- Una vez instalado inicializamos la consola como administrador.
 
-- Esperar que cargue el proceso y seleccionar "Download".
+[![cmd.png](https://i.postimg.cc/Hn4Yw3RG/cmd.png)](https://postimg.cc/rRs2cGqg)
 
-![image](https://user-images.githubusercontent.com/116284986/201179878-c512f021-c252-4802-8d32-dc064d6c5387.png)
-
-- Procedemos a colocar los archivos en el disco principal.
+- Una vez en la consola, debemos introducir el siguiente comando: "Ubuntu". Si es que se tiene otra versión de Ubuntu (Ej: "Ubuntu 18.04.5 LTS") el comando cambiará
+- a "Ubuntu1804".
 - Nos debería quedar una carpeta llamada `LUA` en el disco seleccionado.
 
 ![image](https://user-images.githubusercontent.com/116284986/201181231-edca9f1f-36d2-4253-89a9-c17c727af250.png)
@@ -64,3 +63,4 @@ El proyecto está: _en progreso_
  - LUA - 5.4.2
  - Visual Studio Code
  - MySQL
+ - MySQL Workbench
