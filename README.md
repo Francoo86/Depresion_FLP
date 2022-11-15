@@ -52,24 +52,14 @@ Después de tener `luarocks` instalado, podemos instalar la libreria `mysql-serv
 - Introducimos el comando `sudo apt install mysql-server` para instalar MySql en `Ubuntu`.
 - Confirmamos nuevamente con nuestra contraseña de `Ubuntu` y continuamos.
 
-  
-  - Ya dentro de la Propiedades del sistema, nos dirigimos a `Opciones avanzadas`.
-  - Seleccionamos `Variables de entorno`.
-  
-  ![image](https://user-images.githubusercontent.com/116284986/201191632-75bdc06c-ed4f-43f7-91d9-edc090a5a35c.png)
-  
-  - Una vez dentro, nos dirigimos a Variables del sistema.
-  - Seleccionamos la variable `Path`.
-  - Elegimos Editar.
-  
-  ![image](https://user-images.githubusercontent.com/116284986/201192138-ca7468f8-3bbc-458f-875e-c83c861f3447.png)
+### Posibles errores
+En caso de presentar algun error al intentar acceder con el comando `sudo mysql`, como por ejemplo:
+`Access denied for user 'root'@'localhost' (using password: NO)`, 
+seguiremos los siguientes pasos:
+- Introduciremos el siguiente comando `sudo mysql -u root -p`
+- Nos pedirá una contraseña que es la misma que introducimos en(...)
 
-  - Dentro del apartado de edición, elegimos la opción `Nuevo.`
-  
-  ![image](https://user-images.githubusercontent.com/116284986/201192410-c57243da-c48a-4328-bc4d-3b3744451f34.png)
-  
-  - Agregamos lo siguiente `C:\lua`.
-  - Y finalizamos seleccionando Aceptar y Aplicar.
+Realizado esto ya deberiamos poder acceder a mysql desde ubuntu.
   
 ## Estado del proyecto
 
@@ -77,7 +67,7 @@ El proyecto está: _en progreso_
 
 ## Tecnologias usadas
 
- - LUA - 5.4.2
+ - LUA - 5.1.5
  - Visual Studio Code
  - MySQL
  - MySQL Workbench
