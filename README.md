@@ -68,6 +68,6 @@ El proyecto está: _en progreso_
 ## Tecnologias usadas
 
  - LUA - 5.1.5
- - Visual Studio Code
+ - [Visual Studio Code - 1.73](https://code.visualstudio.com/Download)
  - MySQL
- - MySQL Workbench
+ - [MySQL Workbench - 8.0.31](https://dev.mysql.com/downloads/workbench/)
