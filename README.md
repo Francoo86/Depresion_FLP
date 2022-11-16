@@ -12,7 +12,7 @@ El sistema a desarrollar se hará mediante uso del lenguaje [LUA](https://www.lu
 
 ## Instalacion
 
-Por favor siga la guía de instrucciones para su correcta instalación.
+Siga la guía de instrucciones en orden para su correcta instalación.
 
 - Primero, instalaremos la terminal de entorno Ubuntu con el subsistema de Windows para Linux por medio de la tienda Microsoft.
 
@@ -32,6 +32,7 @@ Por favor siga la guía de instrucciones para su correcta instalación.
 
 Desde ahora cada vez que queramos ingresar a Ubuntu desde consola deberemos introducir el comando `Ubuntu`
 
+### Lua
 
 A continuación, procederemos a introducir los siguientes comandos en orden para la instalación del lenguaje Lua
 - `apt-get update` para la descarga y actualización de paquetes.
@@ -44,10 +45,14 @@ A continuación, procederemos a introducir los siguientes comandos en orden para
 - introduciremos el comando `sudo apt install lua5.1` 
 - Confirmamos con la contraseña que introducimos al entrar por primera vez a `Ubuntu` y esperamos a que se instale.
 
+### Luarocks
+
 Luego de haber instalado Lua instalaremos su administrador de paquetes llamado `luarocks`.
 - Instalaremos `luarocks` mediante el siguiente comando `sudo apt install luarocks`.
 - Confirmamos con nuestra contraseña de `Ubuntu` y continuamos.
- 
+
+### MySQL
+
 Después de tener luarocks instalado, podemos instalar la libreria `mysql-server` 
 - Introducimos el comando `sudo apt install mysql-server` para instalar MySQL en `Ubuntu`.
 - Confirmamos nuevamente con nuestra contraseña de `Ubuntu` y continuamos.
@@ -67,6 +72,8 @@ Si funciona correctamente, deberìa de aparecer lo de la siguiente imagen:
 
 Hecho esto podremos salir usando el comando `exit`.
 
+### LuaSQL
+
 Posteriormente procederemos a instalar LuaSQL:
 - Escribimos el comando `sudo apt-get install libmysqlclient-dev`.
 - `mysql_config --include`
@@ -74,6 +81,8 @@ Posteriormente procederemos a instalar LuaSQL:
 - `sudo luarocks install luasql-mysql MYSQL_INCDIR="directorio_obtenido"`.
 
 Terminado esto ya deberiamos de tener LuaSQL en nuestro sistema.
+
+### MySQL Workbench
 
 Seguidamente instalaremos  [MySQL Workbench - 8.0.31](https://dev.mysql.com/downloads/workbench/)
 - Una vez instalamos MySQL Workbench, en la pantalla de inicio, debemos dirigirnos al apartado que dice `Database`
