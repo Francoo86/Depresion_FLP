@@ -52,6 +52,12 @@ Después de tener `luarocks` instalado, podemos instalar la libreria `mysql-serv
 - Introducimos el comando `sudo apt install mysql-server` para instalar MySql en `Ubuntu`.
 - Confirmamos nuevamente con nuestra contraseña de `Ubuntu` y continuamos.
 
+Luego de esto procederemos a configurar MySQL
+- Escribimos `sudo service mysql start`
+- Luego `sudo mysql`
+[![sudo-mysql.png](https://i.postimg.cc/0jnzGY1c/sudo-mysql.png)](https://postimg.cc/K3KcxgzM)
+- Y después `ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'contraseña';`
+
 ### Posibles errores
 En caso de presentar algun error al intentar acceder con el comando `sudo mysql`, como por ejemplo:
 `Access denied for user 'root'@'localhost' (using password: NO)`, 
