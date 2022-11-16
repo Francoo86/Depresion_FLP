@@ -55,8 +55,8 @@ Después de tener `luarocks` instalado, podemos instalar la libreria `mysql-serv
 Luego de esto procederemos a configurar MySQL
 - Escribimos `sudo service mysql start`
 - Luego `sudo mysql`
-[![sudo-mysql.png](https://i.postimg.cc/0jnzGY1c/sudo-mysql.png)](https://postimg.cc/K3KcxgzM)
 - Y después `ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'contraseña';`
+[![imagen-2022-11-16-114305715.png](https://i.postimg.cc/Xv3N7ZC8/imagen-2022-11-16-114305715.png)](https://postimg.cc/rDn2fwg0)
 
 ### Posibles errores
 En caso de presentar algun error al intentar acceder con el comando `sudo mysql`, como por ejemplo:
