@@ -79,7 +79,10 @@ Seguidamente instalaremos  [MySQL Workbench - 8.0.31](https://dev.mysql.com/down
 - Una vez instalamos MySQL Workbench, en la pantalla de inicio, debemos dirigirnos al apartado que dice `Database`
 - `Connect to Database`
 - dentro de los datos rellenamos en Hostanme = Localhost, Port 3306, Username = root, Password = Store in vault.
-- Al seleccionar Store in Vault, nos pedira una contraseña que sera la mismo que introducimos al configurar MySQL   desde ubuntu.
+
+[![imagen-2022-11-16-192426570.png](https://i.postimg.cc/qB6QYbvH/imagen-2022-11-16-192426570.png)](https://postimg.cc/4nZzH1cW)
+
+- Al seleccionar Store in Vault, nos pedira una contraseña que sera la misma que introducimos al configurar MySQL desde ubuntu.
 - Terminado esto seleccionames "OK" y esperamos a que se conecte.
 
 ### Posibles errores
