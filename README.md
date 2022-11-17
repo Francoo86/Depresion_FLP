@@ -61,11 +61,12 @@ Luego de esto procederemos a configurar MySQL
 - Escribimos `sudo service mysql start`.
 - Luego `sudo mysql`.
 - Y después `ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'contraseña';`.
+- Siendo "root" el nombre de usuario y "contraseña" la clave que, si queremos, podemos modificar.
 
 [![imagen-2022-11-16-114305715.png](https://i.postimg.cc/Xv3N7ZC8/imagen-2022-11-16-114305715.png)](https://postimg.cc/rDn2fwg0)
 
 Para verificar de que esto funciona correctamente podemos intentar el siguiente comando:
-- `CREATE DATABASE nombre_tabla`
+- `CREATE DATABASE nombre_tabla;`
 Si funciona correctamente, deberìa de aparecer lo de la siguiente imagen:
 
 [![Whats-App-Image-2022-11-16-at-11-50-19-AM.jpg](https://i.postimg.cc/W3vrSst3/Whats-App-Image-2022-11-16-at-11-50-19-AM.jpg)](https://postimg.cc/94LrQ5d5)
@@ -104,6 +105,9 @@ En caso de presentar algun error al intentar acceder con el comando `sudo mysql`
 
 Realizado esto ya deberiamos poder acceder a mysql desde ubuntu.
 
+### Adicional
+
+- En caso de que lo necesitemos, podemos volver al usuario `root` introduciendo el comando `sudo -i` o `sudo -s`.
 
   
 ## Estado del proyecto
