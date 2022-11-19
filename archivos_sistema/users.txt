@@ -1,0 +1,79 @@
+DATOS DE PSICOLOGOS.
+INFORME GENERADO EL: 11/19/22 18:28:49
+/***************************************************/
+Nombres	=	Juanito Fulano
+Estudios	=	Educacion
+Especialidad	=	Educacional
+RUT Psicologo	=	8490123
+Digito Verificador	=	4
+Apellidos	=	Perez Ramirez
+/***************************************************/
+Nombres	=	Elizabeth
+Estudios	=	Clinico
+Especialidad	=	Psicologo
+RUT Psicologo	=	14622655
+Digito Verificador	=	6
+Apellidos	=	CarlsonSusan
+/***************************************************/
+Nombres	=	Marcus
+Estudios	=	Clinico
+Especialidad	=	Psicologo
+RUT Psicologo	=	13837859
+Digito Verificador	=	2
+Apellidos	=	Stevens
+/***************************************************/
+Nombres	=	Andrew
+Estudios	=	Clinico
+Especialidad	=	Psicologo
+RUT Psicologo	=	45856665
+Digito Verificador	=	4
+Apellidos	=	Smith
+/***************************************************/
+Nombres	=	Theodore
+Estudios	=	Clinico
+Especialidad	=	Psicologo
+RUT Psicologo	=	40001105
+Digito Verificador	=	0
+Apellidos	=	Williams
+/***************************************************/
+Nombres	=	Debra
+Estudios	=	Clinico
+Especialidad	=	Psicologo
+RUT Psicologo	=	42695644
+Digito Verificador	=	3
+Apellidos	=	Allen
+/***************************************************/
+Nombres	=	Jennifer
+Estudios	=	Clinico
+Especialidad	=	Psicologo
+RUT Psicologo	=	12508269
+Digito Verificador	=	9
+Apellidos	=	Mason
+/***************************************************/
+Nombres	=	Laura
+Estudios	=	Clinico
+Especialidad	=	Psicologo
+RUT Psicologo	=	94731316
+Digito Verificador	=	3
+Apellidos	=	Carrillo
+/***************************************************/
+Nombres	=	Nancy
+Estudios	=	Clinico
+Especialidad	=	Psicologo
+RUT Psicologo	=	43738377
+Digito Verificador	=	3
+Apellidos	=	Murphy
+/***************************************************/
+Nombres	=	George
+Estudios	=	Clinico
+Especialidad	=	Psicologo
+RUT Psicologo	=	48795155
+Digito Verificador	=	5
+Apellidos	=	Robinson
+/***************************************************/
+Nombres	=	Steve
+Estudios	=	Ing. Civil en Minas
+Especialidad	=	Mineria
+RUT Psicologo	=	21945213
+Digito Verificador	=	6
+Apellidos	=	Minecraft
