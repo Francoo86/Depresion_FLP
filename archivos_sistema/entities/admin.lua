@@ -19,7 +19,7 @@ function ADMIN:Menu()
         print("Por favor, seleccione una opción.")
         print("1. Mostrar usuarios.")
         print("2. Borrar usuarios.")
-        print("3. Insertar usuarios.")
+        print("3. Insertar usuarios.") 
         print("4. Resolver problemas de sesion de usuarios.")
         print("5. Exportar a txt todos los usuarios y sus datos.")
         print("6. Deslogearse.")
@@ -32,7 +32,14 @@ function ADMIN:Menu()
             print("Mostrando todos los usuarios.")
             self:ShowUsers()
         elseif Choice == 2 then
-            self:DeleteUsers()
+            print("Introduzca el rut del usuario que desea borrar (sin digito verificador): ")
+            RUN = io.read()
+            self.DeleteUser({{disable = "1"}}, RUN) --disabled = "1"?--
+        elseif Choice == 3 then
+        elseif Choice == 4 then    
+        elseif Choice == 6 then --end?--
+            self:Logout()
+            break
         end
     end
 end
@@ -106,12 +113,59 @@ end
 SQL:SetCurrentTable("THERAPISTS")
 -- ADMIN:RegisterUsers(true)
 
-function ADMIN:DeleteUsers()
+function ADMIN:DeleteUsers(Bool, RUN)
+    
+    if SQL.CurrentTable ~= "THERAPISTS" then return end
+    
+    PrintData(SQL.CurrentTable)
+    
+    --Revisar si existe ese el run.
+     local Check = SQL:RunQuery(string.format([[SELECT COUNT(1) FROM %s WHERE run_tp=%s]], SQL.CurrentTable, RUN))
+     Check = Check:fetch({}, "a")
+    
+      if Check["COUNT(1)"] == "0" then
+        print("Este RUN no existe en la base de datos.")
+        return
+    end
+    
+    print("Run encontrado, borrando...")
 
+    for _, Values in pairs(Data) do ----Disabled = true----
+        SQL:RunQuery(string.format([[UPDATE %s SET disabled='%s', WHERE id_tp=%s]], SQL.CurrentTable, Values.disabled, RUN))
+    end
+    
+     print("Updated table: \n")
+
+    PrintData(SQL.CurrentTable)
+    
 end
 
-function ADMIN:UpdateUsers()
+function ADMIN:UpdateUsers(Data, RUN) --actualizar usuarios--
+    
+    if SQL.CurrentTable ~= "THERAPISTS" then return end
+        
+    PrintData(SQL.CurrentTable) ----imprimir para verificar----
 
+    --Revisar si existe ese el run.
+    local Check = SQL:RunQuery(string.format([[SELECT COUNT(1) FROM %s WHERE run_tp=%s]], SQL.CurrentTable, RUN))
+    Check = Check:fetch({}, "a")
+
+    --No existe entonces terminamos de ejecutar esta función.
+    if Check["COUNT(1)"] == "0" then
+        print("Este run no existe en la base de datos.")
+        return
+    end
+
+    print("Run encontrado, modificando...") ---solo modificar nombres, email, especialidad y degreee---
+                                            ---quiza agregar mas atributos modificables---
+    for _, Values in pairs(Data) do
+        SQL:RunQuery(string.format([[UPDATE %s SET firstname_tp='%s', lastname_tp='%s', email_tp='%s', speciality_tp = '%s', degrees_tp = '$s' WHERE run_tp=%s]], 
+                SQL.CurrentTable, Values.firstname_tp,Values.lastname_tp, Values.email_tp, Values.speciality_tp ,Values.degrees_tp, RUN))
+    end
+
+    print("Updated table: \n")
+
+    PrintData(SQL.CurrentTable) ----imprimir para verificar----
 end
 
 function ADMIN:ShowUsers(Writing)
@@ -121,7 +175,7 @@ function ADMIN:ShowUsers(Writing)
 
     if Writing then return {Show, ShowTable} end
 
-    while ShowTable do
+    while ShowTable do 
         print("/***************************************************/")
         for Names, Value in pairs(ShowTable) do
             print(Names, "\t=\t", Value)
