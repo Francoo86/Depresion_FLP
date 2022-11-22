@@ -112,7 +112,7 @@ Realizado esto ya deberiamos poder acceder a mysql desde ubuntu.
   
 ## Estado del proyecto
 
-El proyecto está: _en progreso_
+El proyecto está: _En fase de pruebas._
 
 ## Tecnologias usadas
 
