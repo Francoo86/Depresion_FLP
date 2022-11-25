@@ -1,4 +1,4 @@
-local SQL = require("../db_funcs")
+local SQL = require("../lib/db_funcs")
 local ADMIN = require("entities.admin")
 local SURV = require("entities.surveys")
 local PAT = require("entities.patients")
@@ -137,8 +137,7 @@ end
 function PSY:Login(Data)
     if self.Data.ID ~= -1 then return end
 
-    local Query = SQL:RunQuery(string.format([[SELECT id_tp, firstname_tp, lastname_tp FROM %s WHERE NOT disabled=true and email_tp = '%s' and pass_tp = '%s']],
-    SQL.CurrentTable, Data[1], ADMIN:PassToSHA256(Data[2])))
+    local Query = SQL:RunQuery(string.format([[SELECT id_tp, firstname_tp, lastname_tp FROM THERAPISTS WHERE NOT disabled=true and email_tp = '%s' and pass_tp = '%s']], Data[1], ADMIN:PassToSHA256(Data[2])))
     local Fetch = Query:fetch({}, "n")
 
     if not Fetch then
