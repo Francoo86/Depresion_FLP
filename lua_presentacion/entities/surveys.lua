@@ -1,5 +1,5 @@
-local SQL = require("../db_funcs")
-local util = require("../util")
+local SQL = require("../lib/db_funcs")
+local util = require("../lib/util")
 
 local SURV = {}
 
@@ -10,6 +10,8 @@ SURV.Data = {
     TherapistID = -1,
 }
 
+--- Setear terapeuta.
+--- @param NewID number El ID del terapeuta a asociar.
 function SURV:SetTherapistID(NewID)
     if self.Data.TherapistID == NewID then
         return
@@ -18,6 +20,8 @@ function SURV:SetTherapistID(NewID)
     self.Data.TherapistID = tonumber(NewID) or -1
 end
 
+--- Guardar datos de la encuesta obtenida en la memoria.
+--- @param Data table La Tabla que tiene los siguientes atributos (por orden): ID, Nombre, Descripcion de la encuesta, y el ID del Terapeuta.
 function SURV:SetData(Data)
     self.Data.ID = tonumber(Data[1]) or -1
     self.Data.Name = Data[2]
@@ -25,28 +29,35 @@ function SURV:SetData(Data)
     self.Data.TherapistID = Data[4] or self.Data.TherapistID
 end
 
+--- Setea el ID de una encuesta para utilizarla.
+--- @param NewID number El ID de la encuesta especificada.
 function SURV:SetID(NewID)
     if self.Data.ID  == NewID then return end
 
     self.Data.ID = tonumber(NewID) or - 1
 end
 
+--- @return number SurvID El ID de la encuesta que se está utilizando.
 function SURV:GetID()
     return self.Data.ID
 end
 
+--- @return number TherapistID El ID del terapeuta que está usando el sistema de encuestas.
 function SURV:GetTherapistID()
     return self.Data.TherapistID
 end
 
+--- @return table Data Obtener los datos de una encuesta. (ID, Nombre, Descripción e ID de Terapeuta).
 function SURV:GetData()
     return self.Data
 end
 
+--- Imprime datos básicos de una encuesta (ID, Nombre y Descripción).
 function SURV:PrintBasicData()
     print(string.format("Encuesta encontrada con codigo %s, nombre: %s, desc: %s", self.Data.ID, self.Data.Name, self.Data.Desc))
 end
 
+--- Cambia datos basicos de una encuesta.
 function SURV:ChangeBasicData(IsName)
     if not self.Data.ID or self.Data.ID < 0 then return end
     local DataChange = IsName and "name_svy" or "desc_svy"
@@ -61,13 +72,15 @@ function SURV:ChangeBasicData(IsName)
         return
     end
 
-    print("Cambios realizados.")
-    SQL:RunQuery(string.format([[UPDATE SURVEYS SET %s = '%s' WHERE id_svy = %s]], DataChange, Change, self.Data.ID))
-    self:UpdateConsoleText()
-end
+    local Query = SQL:RunQuery(string.format([[UPDATE SURVEYS SET %s = '%s' WHERE id_svy = %s AND disabled=false]], DataChange, Change, self.Data.ID))
 
-function SURV:ModifyAnswers()
-    if not self.Data.ID or self.Data.ID < 0 then return end
+    if Query == 0 then
+        print("[ERROR] No se ha realizado ningún cambio, verifique que la encuesta existe.")
+        return
+    end
+
+    print("[INFO] Cambios realizados exitosamente.")
+    self:UpdateConsoleText()
 end
 
 function SURV:GetQuestions(ShowAnswers)
@@ -122,8 +135,10 @@ function SURV:GetAnswerCount(QtnID)
     return tonumber(Count) or -1
 end
 
--- Se veria mejor con un JOIN (pensando en colocar esa query).
-function SURV:GetAnswers(Qtn_ID)
+--- Obtener las respuesta de una determinada pregunta.
+--- @param Qtn_ID number El ID de la pregunta.
+--- @param IsAnswering? boolean No mostrar los codigos de las respuestas mientras se realiza una encuesta a un paciente.
+function SURV:GetAnswers(Qtn_ID, IsAnswering)
     if not self.Data.ID or self.Data.ID < 0 then return end
     if not Qtn_ID or Qtn_ID < 0 then return end
 
@@ -135,13 +150,17 @@ function SURV:GetAnswers(Qtn_ID)
         return
     end
 
-    print(string.format("Mostrando respuestas para esa pregunta. COD_Pregunta: %s", Qtn_ID))
-    print("Codigo Respuesta | Texto respuesta | Puntos Respuesta")
+    print(IsAnswering and "Respuestas disponibles para la pregunta: " or string.format("Mostrando respuestas para esa pregunta. COD_Pregunta: %s", Qtn_ID))
+    print((IsAnswering and "" or "Codigo respuesta") .. " | Texto respuesta | Puntos Respuesta")
 
+    local i = 0
     while Answers do
-        local Data = SQL:ConcatData("", Answers, "\t\t")
-        print(Data)
+        -- There are no continues.
+        local Concat = (IsAnswering and "" or Answers[1]) .. "\t\t" .. Answers[2] .. "\t\t" .. Answers[3] .. "\t\t"
+        print(Concat)
+
         Answers = Query:fetch(Answers, "n")
+        i = i + 1
     end
 end
 
@@ -168,7 +187,8 @@ local AnswersUpdate = {
     }
 }
 
--- Pendiente.
+-- Modificar preguntas.
+--- @param ModifyAnswers? boolean Modificar respuestas solamente.
 function SURV:ModifyQuestions(ModifyAnswers)
     if not self.Data.ID or self.Data.ID < 0 then return end
 

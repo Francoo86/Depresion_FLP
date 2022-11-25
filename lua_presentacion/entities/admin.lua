@@ -1,9 +1,9 @@
-local SQL = require("../db_funcs")
-local util = require("../util")
+local SQL = require("../lib/db_funcs")
+local util = require("../lib/util")
 
 -- Libreria para encriptar contraseñas.
 -- Source: https://github.com/Egor-Skriptunoff/pure_lua_SHA
-local shalib = require("../sha2")
+local shalib = require("../lib/sha2")
 
 local ADMIN = {}
 ADMIN.LoginData = {}
@@ -19,33 +19,41 @@ function ADMIN:Menu()
     local Choice = 0
     local CurrData = string.format([[ID: %s, Nombre: %s %s]], self.LoginData.User_ID, self.LoginData.Name, self.LoginData.LastName)
 
-    while Choice ~= 6 do
+    while Choice ~= 7 do
         print("/*** SISTEMA DE ADMINISTRADOR ***/")
         print(CurrData)
         print("Por favor, seleccione una opción.")
         print("1. Mostrar usuarios.")
         print("2. Mostrar usuarios deshabilitados.")
-        print("2. Borrar usuarios.")
-        print("3. Insertar usuarios.")
-        print("4. Resolver problemas de sesion de usuarios.")
-        print("5. Exportar a txt todos los usuarios vigentes y sus datos.")
-        print("6. Deslogearse.")
+        print("3. Borrar usuarios.")
+        print("4. Insertar usuarios.")
+        print("5. Reactivar usuarios eliminados/deshabilitados.")
+        -- print("5. Resolver problemas de sesion de usuarios.")
+        print("6. Exportar a txt todos los usuarios vigentes y sus datos.")
+        print("7. Deslogearse.")
 
         Choice = tonumber(io.read()) or 0
 
-        if Choice < 1 or Choice > 6 then
+        if Choice < 1 or Choice > 7 then
             print("Por favor introduzca una opción válida.")
         elseif Choice == 1 then
             print("Mostrando todos los usuarios.")
             self:ShowUsers()
         elseif Choice == 2 then
-            self:DeleteUsers()
+            print("Mostrando usuarios eliminados/deshabilitados.")
+            self:ShowUsers(false, true)
+            --self:DeleteUsers()
         elseif Choice == 3 then
-            self:RegisterUsers(false)
+            self:DeleteUsers()
+            --self:RegisterUsers(false)
         elseif Choice == 4 then
-            self:UpdateUsers()
+            self:RegisterUsers(false)
+            --self:UpdateUsers()
         elseif Choice == 5 then
+            self:ReactivateUsers()
+        elseif Choice == 6 then
             self:ExportToTXT()
+            --self:ExportToTXT()
         else
             self:Logout()
         end
@@ -54,15 +62,13 @@ end
 
 -- Should i create an inheritance table?
 function ADMIN:Login(LoginData)
-    if not SQL.CurrentTable or SQL.CurrentTable ~= "THERAPISTS" then return end
-
-    local Query = SQL:RunQuery(string.format([[SELECT * FROM %s WHERE speciality_tp = 'admin' and email_tp = '%s' and pass_tp = '%s']], SQL.CurrentTable, LoginData[1], SHA256(LoginData[2])))
-    local Data = Query:fetch({}, "a")
+    local Query = SQL:RunQuery(string.format([[SELECT id_tp, firstname_tp, lastname_tp FROM THERAPISTS WHERE speciality_tp = 'admin' and email_tp = '%s' and pass_tp = '%s' AND disabled=false]], LoginData[1], SHA256(LoginData[2])))
+    local Data = Query:fetch({}, "n")
 
     if Data then
-        self.LoginData.User_ID = Data[SQL.PrimaryKeys[SQL.CurrentTable]]
-        self.LoginData.Name = Data["firstname_tp"]
-        self.LoginData.LastName = Data["lastname_tp"]
+        self.LoginData.User_ID = Data[1]
+        self.LoginData.Name = Data[2]
+        self.LoginData.LastName = Data[3]
         print("ADMIN: Logeo exitoso.")
 
         self:Menu()
@@ -79,10 +85,8 @@ end
 
 function ADMIN:RegisterUsers(IsTherapist)
     -- Este es un menu de prueba en realidad.
-    if SQL.CurrentTable ~= "THERAPISTS" then return end
-
     local Phrases = {
-        IntroRUT = "Por favor introduzca " .. (IsTherapist and "su" or "el") .. " RUT" .. ":",
+        IntroRUT = "Por favor introduzca " .. (IsTherapist and "su" or "el") .. " RUT" .. ": (sin puntos y sin digito verificador).",
         IntroFN = IsTherapist and "Introduzca sus nombres" or "Introduzca los nombres del psicologo" .. ":",
         IntroSN = IsTherapist and "Introduzca sus apellidos" or "Introduzca los apellidos del psicologo" .. ":"
     }
@@ -100,7 +104,7 @@ function ADMIN:RegisterUsers(IsTherapist)
     local FirstName = io.read()
     print(Phrases.IntroSN)
     local LastNames = io.read()
-    print("Introducir la specialidad: ")
+    print("Introducir la especialidad: ")
     local Speciality = io.read()
     print("Introducir lo que estudio: ")
 
@@ -121,8 +125,7 @@ function ADMIN:RegisterUsers(IsTherapist)
     local Pass = io.read()
     local Pass256 = SHA256(Pass)
 
-    SQL:RunQuery(string.format([[INSERT INTO %s (run_tp, dv_tp, firstname_tp, lastname_tp, speciality_tp, degrees_tp, email_tp, pass_tp) VALUES(%s, '%s', '%s', '%s', '%s', '%s', '%s', '%s')]],
-    SQL.CurrentTable, RUT, VD, FirstName, LastNames, Speciality, Degree, Email, Pass256))
+    SQL:RunQuery(string.format([[INSERT INTO THERAPISTS (run_tp, dv_tp, firstname_tp, lastname_tp, speciality_tp, degrees_tp, email_tp, pass_tp) VALUES(%s, '%s', '%s', '%s', '%s', '%s', '%s', '%s')]], RUT, VD, FirstName, LastNames, Speciality, Degree, Email, Pass256))
     print("Usuario registrado con exito.")
 
     return true
@@ -134,8 +137,8 @@ function ADMIN:DeleteUsers()
     local VD = util:GetVerifierDigit(RUT)
 
     if not VD then return end
-    SQL:RunQuery(string.format([[UPDATE FROM %s SET disabled=true WHERE run_tp = %s and disabled=false and not id_tp = %s]], SQL.CurrentTable, RUT, self.LoginData.User_ID))
-    print(string.format("Usuario %s borrado con exito. Si se borro por error activelo en una opcion del menu.", RUT))
+    local Query = SQL:RunQuery(string.format([[UPDATE THERAPISTS SET disabled=true WHERE run_tp = %s and disabled=false and not id_tp = %s]], RUT, self.LoginData.User_ID))
+    print(Query == 1 and string.format("Usuario %s borrado con exito. Si se borro por error activelo en una opcion del menu.", RUT) or string.format("[ERROR] Usuario de RUT %s no existe en el sistema.", RUT))
 end
 
 function ADMIN:ReactivateUsers()
@@ -144,7 +147,7 @@ function ADMIN:ReactivateUsers()
     local VD = util:GetVerifierDigit(RUT)
 
     if not VD then return end
-    local Query = SQL:RunQuery(string.format([[UPDATE FROM %s SET disabled=false WHERE run_tp = %s AND dv_tp = '%s' and disabled=true]], SQL.CurrentTable, RUT, VD))
+    local Query = SQL:RunQuery(string.format([[UPDATE THERAPISTS SET disabled=false WHERE run_tp = %s AND dv_tp = '%s' and disabled=true]], RUT, VD))
 
     if not Query then
         print("El usuario no se pudo actualizar debido a que no existe o está activado.")
@@ -207,12 +210,14 @@ function ADMIN:UpdateUsers()
     local VD = util:GetVerifierDigit(IntroRUT)
     if not VD then return end
 
-    SQL:RunQuery(string.format([[UPDATE %s SET %s='%s' WHERE run_tp=%s AND dv_tp = '%s']], SQL.CurrentTable, Final.Query, Update, IntroRUT, VD))
+    local Query = SQL:RunQuery(string.format([[UPDATE THERAPISTS SET %s='%s' WHERE run_tp=%s AND dv_tp = '%s']], Final.Query, Update, IntroRUT, VD))
+    print(Query == 0 and "[ERROR] Actualización falló, revise si el usuario existe en el sistema." or "[INFO] Actualización exitosa.")
 end
 
-function ADMIN:ShowUsers(Writing)
+function ADMIN:ShowUsers(Writing, Disabled)
+    Disabled = Disabled or false
     local Show = SQL:RunQuery(string.format([[SELECT run_tp as 'RUT Psicologo', dv_tp AS 'Digito Verificador' 
-    ,firstname_tp AS 'Nombres', lastname_tp AS 'Apellidos', speciality_tp as "Especialidad", degrees_tp as "Estudios" FROM %s WHERE disabled=false]], SQL.CurrentTable))
+    ,firstname_tp AS 'Nombres', lastname_tp AS 'Apellidos', speciality_tp as "Especialidad", degrees_tp as "Estudios" FROM THERAPISTS WHERE disabled=%s]], tostring(Disabled)))
     local ShowTable = Show:fetch({}, "a")
 
     if Writing then return {Show, ShowTable} end

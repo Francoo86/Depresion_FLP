@@ -1,4 +1,3 @@
-local SQL = require("db_funcs")
 local PSY = require("entities.psicologos")
 local ADMIN = require("entities.admin")
 
@@ -18,8 +17,6 @@ end
 
 local function InitLogin()
     -- I don't like the idea of nested ifs.
-    SQL:SetCurrentTable("THERAPISTS")
-
     while not IsLogged do
         print("/**** SISTEMA DE MANEJO DE ENCUESTAS/PACIENTES ****/")
         print("1. Iniciar sesión.")
@@ -44,7 +41,7 @@ local function InitLogin()
             local SelectLogin = tonumber(io.read()) or nil
 
             if SelectLogin then
-                IsLogged = SelectLoginType(SelectLogin, Data)
+                IsLogged = SelectLoginType(SelectLogin, Data) or false
             end
         elseif Choice == 2 then
             PSY:CreateAccount()

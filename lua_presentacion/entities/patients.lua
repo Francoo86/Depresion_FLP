@@ -2,8 +2,8 @@
 -- TODO: Apply the DRY principle correctly.
 
 local PATIENTS = {}
-local SQL = require("../db_funcs")
-local util = require("../util")
+local SQL = require("../lib/db_funcs")
+local util = require("../lib/util")
 local SURV = require("entities.surveys")
 
 PATIENTS.Results = {
@@ -72,24 +72,31 @@ function PATIENTS:DoSurvey()
         return
     end
 
-    -- Probando JOINS.
-    print("Mostrando preguntas de la encuesta seleccionada: ")
-    print(string.format("Codigo Pregunta | \t Texto de la Pregunta \t |"))
-
     -- Crear una tabla donde almacene los resultados.
     self:CreateResults(SurvID)
 
+    print("Mostrando preguntas de la encuesta seleccionada: ")
+    print(string.format("Num. Pregunta | \t Texto de la Pregunta \t |"))
+
+    local i = 0
     while Questions do
-        local Data = SQL:ConcatData("", Questions, "\t\t")
-        print(Data)
+        print("-------------------------------")
+        for Index, Value in ipairs(Questions) do
+            if Index ~= 1 then
+                print("Pregunta ", i + 1, Value, "\t\t")
+            end
+        end
+        --local Data = SQL:ConcatData("", Questions, "\t\t")
+        --print(Data)
         local QtnID = tonumber(Questions[1]) or -1
         print("-------------------------------")
-        SURV:GetAnswers(QtnID)
+        SURV:GetAnswers(QtnID, true)
         print("-------------------------------")
 
         --Aca le pregunta al usuario sobre los datos de la encuesta.
         self:AskData(SurvID, PatID, QtnID)
         Questions = Query:fetch(Questions, "n")
+        i = i + 1
     end
 
     local Points = self:ObtainPoints(SurvID, PatID)
@@ -236,12 +243,66 @@ function PATIENTS:ShowDiagnostics()
     print("/******************************************/\n")
 end
 
+-- TODO: Este es el JOIN más largo de todo el programa.
 function PATIENTS:ShowSurveysResults()
-    print("Esta en fase BETA (Es un programa piloto).")
-    if not TerminarJoins then return end
-    print("Ingrese el RUT del paciente")
+    local Therapist = self:GetTherapistID()
 
-    local Query = SQL:RunQuery(string.format([[SELECT SUM(res.choice_resp) FROM `RESPONSES` res INNER JOIN `RESULTS` final ON res.`RESULTS_id_res` = final.id_res AND res.`SURVEYS_id_svy` = 1 AND final.id_res = 2 AND res.`PATIENTS_id_pat` = 1 INNER JOIN `PATIENTS` p ON res.`PATIENTS_id_pat` = p.id_pat WHERE p.`THERAPISTS_id_tp` = 1;]]))
+    if not Therapist or Therapist < 0 then return end
+
+    print("Introduzca el código del resultado del diagnostico.")
+    local IDRes = tonumber(io.read()) or nil
+
+    if not IDRes then
+        print("[ERROR] El ID introducido no corresponde a un número.")
+        return
+    end
+
+    print(string.format("El codigo introducido es %s", IDRes))
+
+    local Query = SQL:RunQuery(string.format([[
+        SELECT q.SURVEYS_id_svy AS "SurvCode", q.qtn_text AS 'Texto Pregunta', a.text_ans AS 'Respuesta seleccionada', 
+        rps.choice_resp AS 'Puntos obtenidos', pat.run_pat as 'RUT Paciente' FROM RESPONSES rps 
+        INNER JOIN QUESTIONS q ON rps.QUESTIONS_id_qtn = q.id_qtn 
+        INNER JOIN ANSWERS a ON a.QUESTIONS_id_qtn = q.id_qtn AND rps.ANSWERS_id_ans = a.id_ans 
+        INNER JOIN PATIENTS pat ON pat.id_pat = rps.PATIENTS_id_pat AND pat.THERAPISTS_id_tp = %s AND rps.RESULTS_id_res = %s;
+    ]], Therapist, IDRes))
+
+    local Fetch = Query:fetch({}, "a")
+
+    if not Fetch then
+        print("[ERROR] No existe ningún codigo de resultado asociado a ese.")
+        return
+    end
+
+    print(string.format("RUT Paciente: %s", Fetch["RUT Paciente"]))
+    local IDSurv = tonumber(Fetch["SurvCode"])
+
+    -- El ID de la encuesta debería existir en la BD.
+    local SurvQuery = SQL:RunQuery(string.format([[SELECT name_svy, desc_svy FROM SURVEYS WHERE id_svy = %s AND disabled = false]], IDSurv))
+    local SurvFetch = SurvQuery:fetch({}, "n")
+    print(string.format("Nombre de la encuesta: '%s'\nDescripción de la encuesta: '%s'", SurvFetch[1], SurvFetch[2]))
+
+    print("IMPRIMIENDO RESULTADOS...")
+
+    local NotPrint = {}
+    NotPrint["RUT Paciente"] = true
+    NotPrint["SurvCode"] = true
+
+    while Fetch do
+        print("/**************************************************/")
+        for Name, Value in pairs(Fetch) do
+            if not NotPrint[Name] then
+                print(Name, ":", Value)
+            end
+        end
+
+        Fetch = Query:fetch(Fetch, "a")
+    end
+    -- print("Esta en fase BETA (Es un programa piloto).")
+    -- if not TerminarJoins then return end
+    --print("Ingrese el RUT del paciente")
+
+   --  local Query = SQL:RunQuery(string.format([[SELECT SUM(res.choice_resp) FROM `RESPONSES` res INNER JOIN `RESULTS` final ON res.`RESULTS_id_res` = final.id_res AND res.`SURVEYS_id_svy` = 1 AND final.id_res = 2 AND res.`PATIENTS_id_pat` = 1 INNER JOIN `PATIENTS` p ON res.`PATIENTS_id_pat` = p.id_pat WHERE p.`THERAPISTS_id_tp` = 1;]]))
 end
 
 function PATIENTS:ShowAssociated()
@@ -332,7 +393,7 @@ function PATIENTS:Register()
 
     print("[MENU] REGISTRO PACIENTES.")
     print("Registrar paciente para atención.")
-    print("Introduzca el RUT del paciente (sin digito verificador).")
+    print("Introduzca el RUT del paciente (sin digito verificador y sin puntos).")
     local RUTPat = tonumber(io.read()) or nil
     local VD = util:GetVerifierDigit(RUTPat)
     if not VD then return false end
@@ -343,7 +404,7 @@ function PATIENTS:Register()
     local LastNames = io.read()
     print("Introduzca la direccion del paciente.")
     local Address = io.read()
-    print("Introduzca la fecha de nacimiento. En formato Mes/Dia/Año")
+    print("Introduzca la fecha de nacimiento. En formato Mes/Dia/Año. Ejemplo => 04/12/1996")
     local BirthDate = io.read()
 
     if not util:IsValidDate(BirthDate) then
